@@ -1,0 +1,63 @@
+﻿@page "/employeePage"
+@inject EmployeeService EmployeeService
+
+
+<NavLink class="nav-link" href="AddEmployee">
+    <span class="oi oi-plus" aria-hidden="true"></span> Add New
+</NavLink>
+
+<h1>Employee Information</h1>
+
+@if (objecEmployees == null)
+{
+    <p><em>Loanding.....</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Country</th>
+                <th>City</th>
+                <th colspan="2"class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in objecEmployees)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Gender</td>
+                    <td>@employee.Country</td>
+                    <td>@employee.City</td>
+                    <td>
+                        <a class="nav-link" href="EditEmployee/@employee.Id">
+                            <span class="oi oi-pencil" aria-hidden="true"></span> Edit
+                        </a>
+                        
+                    </td>
+                    <td>
+                        <a class="nav-link" href="DeleteEmployee/@employee.Id">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    List<BlazorEmployee.Data.Employee>
+    objecEmployees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        objecEmployees = await Task.Run(() => EmployeeService.GetAllEmployee());
+    }
+}
